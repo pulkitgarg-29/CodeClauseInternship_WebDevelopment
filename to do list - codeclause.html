@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0XCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <title>To-Do List </title>
+    <style>
+        body {
+            background-color: #f4f4f4;
+            font-family: "Arial", sans-serif;
+        }
+
+        header {
+            animation: backgroundChange 2s ease-in-out infinite alternate;
+            height: 50px; 
+        }
+
+        @keyframes backgroundChange {
+            0% {
+                background-color: #0078d4;
+            }
+            100% {
+                background-color: #1e7145;
+            }
+        }
+
+        .font-weight-bold {
+            font-weight: bold;
+        }
+
+        
+        .container {
+            max-width: 500px;
+        }
+
+      
+        ul.list-group li.done {
+            text-decoration: line-through;
+        }
+    </style>
+</head>
+<body>
+    <header class="bg-primary text-white p-4">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-12 col-md-12 col-sm-12">
+                    <h1 class="font-weight-bold">To-Do List with Reminder</h1>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <div class="container mt-3">
+        <h2 class="font-weight-bold">Add Items</h2>
+
+        <label id="lblsuccess" class="text-success" style="display: none;"></label>
+
+        <form id="addForm">
+            <div class="row">
+                <div class="col-lg-7 col-md-7 col-sm-7">
+                    <input type="text" onkeyup="toggleButton(this, 'submit')" class="form-control" id="item">
+                </div>
+
+                <div class="col-lg-3 col-md-3 col-sm-3">
+                    <input type="datetime-local" class="form-control" id="dueDate">
+                </div>
+
+                <div class="col-lg-2 col-md-2 col-sm-2">
+                    <input type="button" class="btn btn-dark" id="submit" value="Submit" disabled onclick="addItem()">
+                </div>
+            </div>
+        </form>
+
+        <h3 class="font-weight-bold mt-4">Tasks</h3>
+
+        <ul class="list-group" id="items"></ul>
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+    <script>
+        function toggleButton(input, buttonId) {
+            var submitButton = document.getElementById(buttonId);
+            submitButton.disabled = input.value === '';
+        }
+
+        function addItem() {
+            var input = document.getElementById('item');
+            var text = input.value.trim();
+            if (text !== '') {
+                var ul = document.getElementById('items');
+                var li = document.createElement('li');
+                li.className = 'list-group-item';
+                var dueDate = document.getElementById('dueDate').value;
+                li.innerHTML = text + ' (Due: ' + dueDate + ')';
+                li.onclick = function () {
+                    this.classList.toggle('done');
+                };
+                ul.appendChild(li);
+                input.value = '';
+                document.getElementById('dueDate').value = '';
+                document.getElementById('lblsuccess').textContent = 'Task added successfully.';
+                document.getElementById('lblsuccess').style.display = 'block';
+                setTimeout(function () {
+                    document.getElementById('lblsuccess').style.display = 'none';
+                }, 2000);
+            }
+        }
+    </script>
+</body>
+</html>
